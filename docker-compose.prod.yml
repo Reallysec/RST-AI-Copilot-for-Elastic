@@ -38,7 +38,7 @@ services:
     # Tag is installer-managed: rst-update.sh writes GATEWAY_IMAGE_TAG into .env
     # on a health-gated release install / rollback (P4). Default preserves the
     # pre-P4 behaviour when the var is unset.
-    image: rst-elastic-ai-copilot-gateway:${GATEWAY_IMAGE_TAG:-1.2.7}
+    image: rst-elastic-ai-copilot-gateway:${GATEWAY_IMAGE_TAG:-1.2.8}
     container_name: rst-elastic-ai-copilot-gateway
     restart: unless-stopped
     # Resource ceiling so one runaway request / memory leak can't starve the
@@ -146,7 +146,7 @@ services:
       # Current running version — the heartbeat sends it, and the server only
       # offers a release/content pack newer than this. Keep in lockstep with
       # GATEWAY_IMAGE_TAG (rst-update.sh bumps the tag on install).
-      - APP_VERSION=${APP_VERSION:-${GATEWAY_IMAGE_TAG:-1.2.7}}
+      - APP_VERSION=${APP_VERSION:-${GATEWAY_IMAGE_TAG:-1.2.8}}
       # Vendor content/release signing PUBLIC key — content packs + online releases
       # verify against it fail-closed. OPTIONAL: leave unset and verification falls
       # back to the built-in license public key (fine until you ship dedicated-key
@@ -267,8 +267,8 @@ services:
 
   # Bundled Elasticsearch + Kibana for a PoC or a host without its own ELK. Only
   # start with `--profile bundled-elk` (deploy.sh asks); ES_URL / KIBANA_URL in .env
-  # then point at these service names. Offline hosts load the images from the
-  # optional RST-Elastic-AI-Copilot-elk-images-<version>.tar release asset.
+  # then point at these service names. Offline hosts `docker load` images saved
+  # on a connected machine (the Release ships no ELK images).
   # RST_ELK_VERSION: deploy.sh writes 9.5.3 for a new install; unset keeps the
   # 8.12.2 that installs before 1.2.4 created their data with (9.x can't open it).
   elasticsearch:
