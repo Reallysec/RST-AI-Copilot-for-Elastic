@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <title>RST Elastic AI Copilot</title>
+  <clipPath id="eac-r"><rect width="128" height="128" rx="28"/></clipPath>
+  <g clip-path="url(#eac-r)">
+    <rect width="128" height="128" fill="#1C1E23"/>
+    <path d="M128 0V128H0Z" fill="#343741"/>
+  </g>
+  <rect x="22" y="26" width="68" height="14" rx="7" fill="#00BFB3"/>
+  <rect x="34" y="46" width="68" height="14" rx="7" fill="#FEC514"/>
+  <rect x="22" y="66" width="68" height="14" rx="7" fill="#F04E98"/>
+  <rect x="34" y="86" width="68" height="14" rx="7" fill="#1BA9F5"/>
+  <g transform="translate(92 14)" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/>
+    <path d="M20 2v4M22 4h-4"/>
+    <circle cx="4" cy="20" r="2"/>
+  </g>
+</svg>
