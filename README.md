@@ -78,7 +78,7 @@ Everything below is in the free Community Edition (one user, one node, no model-
 
 ## Professional and Enterprise
 
-Professional unlocks four AI engines: **alert batch triage**, **alert investigation** (agentic evidence gathering, timeline, MITRE ATT&CK, incident reports), a **detection-rule copilot** (KQL / EQL / threshold rules, `.ndjson` export) and a **platform-ops copilot**, plus scheduled **operations reports** and more users (priced per user). Enterprise adds organisation-scale integration. Upgrading is a licence import on the same install: no reinstall, data and host fingerprint are kept. A 30-day trial covers every Enterprise feature on one host.
+Professional unlocks four AI engines: **alert batch triage**, **alert investigation** (agentic evidence gathering, timeline, MITRE ATT&CK, incident reports), a **detection-rule copilot** (KQL / EQL / threshold rules, `.ndjson` export) and a **platform-ops copilot**, plus scheduled **operations reports** and more users (priced per user). Enterprise adds organisation-scale integration. Upgrading is a licence import on the same install: no reinstall, data and host fingerprint are kept. A 14-day trial covers every Enterprise feature on one host.
 
 <table>
   <tr>
