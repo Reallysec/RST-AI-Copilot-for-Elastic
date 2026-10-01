@@ -35,7 +35,7 @@
 
 ## 快速开始
 
-需要一台 Linux 主机（Docker Engine 24+、Compose v2），能访问 Elasticsearch 8.x 或 9.x，一个 OpenAI 兼容的大模型端点，以及一个给分析师用的域名（[完整系统要求](https://reallysec.com/docs/elastic-ai-copilot/install/requirements)）。
+需要一台 Linux 主机（Docker Engine 24+、Compose v2），能访问 Elasticsearch 8.x 或 9.x，一个 OpenAI 兼容的大模型端点，以及一个给分析师用的域名或 IP（[完整系统要求](https://reallysec.com/docs/elastic-ai-copilot/install/requirements)）。
 
 一条命令安装：
 
@@ -43,7 +43,7 @@
 curl -fsSL https://github.com/reallysec/RST-Elastic-AI-Copilot/releases/latest/download/install.sh | sudo bash
 ```
 
-脚本下载最新的交付包，校验 SHA-256，解压到 `/opt/rst-elastic-ai-copilot` 后执行 `deploy.sh`。所有版本是同一个交付包：不导入许可即为免费的社区版，在「设置 → 许可」导入许可后原地解锁专业版或企业版。离网主机可以在有网的机器上加 `--download-only` 下载，再把交付包拷过去。
+脚本下载最新的交付包，校验 SHA-256，解压到 `/opt/rst-elastic-ai-copilot` 后执行 `deploy.sh`。所有版本是同一个交付包：不导入许可即为免费的社区版，在侧栏「产品激活」页（`https://<地址>/v2/license`）激活许可后原地解锁专业版或企业版。离网主机可以在有网的机器上加 `--download-only` 下载，再把交付包拷过去。
 
 也可以从 [Releases](https://github.com/reallysec/RST-Elastic-AI-Copilot/releases) 手动下载交付包，然后：
 
@@ -53,7 +53,11 @@ tar xzf RST-Elastic-AI-Copilot-<版本>.tar.gz
 cd RST-Elastic-AI-Copilot-<版本> && ./deploy.sh
 ```
 
-`deploy.sh` 加载镜像、生成密钥和主机指纹、询问大模型与 Elasticsearch 地址，然后在 Caddy TLS 后面起整个栈。约两分钟后打开 `https://<域名>/v2/`。
+`deploy.sh` 加载镜像、生成密钥和主机指纹、询问大模型与 Elasticsearch 地址，让你设定管理员口令，然后在 Caddy TLS 后面起整个栈。约两分钟后打开 `https://<域名或 IP>/v2/`，用 `admin` 登录。
+
+证书默认由 Caddy 内置 CA 签发，不管填的是 IP 还是域名都是自签名证书，浏览器会提示不安全，信任它的根证书即可。要用自己的证书或 Let's Encrypt，在 `.env` 里设 `CADDY_TLS`（见部署文档）。
+
+**激活许可**（社区版跳过）：以管理员身份打开侧栏「产品激活」。在线激活：粘贴 license key，点「激活」，自动绑定本机（需出站访问 `license.reallysec.com:443`）。离线激活（企业版）：切到「离线激活」，复制主机指纹，凭它在 [console.reallysec.com](https://console.reallysec.com) 或找销售拿到 `.lic` 文件，上传后激活。
 
 升级、回滚、备份、SSO、Elasticsearch 权限、全部 `.env` 项：[安装文档](https://reallysec.com/docs/elastic-ai-copilot/install/deploy)。
 

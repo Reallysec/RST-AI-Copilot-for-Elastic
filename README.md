@@ -35,7 +35,7 @@
 
 ## Quick start
 
-You need a Linux host with Docker Engine 24+ and Compose v2, network access to Elasticsearch 8.x or 9.x, an OpenAI-compatible LLM endpoint, and a hostname for the analysts ([full requirements](https://reallysec.com/en/docs/elastic-ai-copilot/install/requirements)).
+You need a Linux host with Docker Engine 24+ and Compose v2, network access to Elasticsearch 8.x or 9.x, an OpenAI-compatible LLM endpoint, and a hostname or IP address for the analysts ([full requirements](https://reallysec.com/en/docs/elastic-ai-copilot/install/requirements)).
 
 Install with one command:
 
@@ -43,7 +43,7 @@ Install with one command:
 curl -fsSL https://github.com/reallysec/RST-Elastic-AI-Copilot/releases/latest/download/install.sh | sudo bash
 ```
 
-The script downloads the latest bundle, checks its SHA-256, unpacks it into `/opt/rst-elastic-ai-copilot` and runs `deploy.sh`. There is one bundle for every edition: without a licence it runs as the free Community Edition, and importing a licence under **Settings → License** unlocks Professional or Enterprise in place. On an air-gapped host, run it elsewhere with `--download-only` and carry the bundle over.
+The script downloads the latest bundle, checks its SHA-256, unpacks it into `/opt/rst-elastic-ai-copilot` and runs `deploy.sh`. There is one bundle for every edition: without a licence it runs as the free Community Edition, and activating a licence on the **License** page (sidebar, `https://<host>/v2/license`) unlocks Professional or Enterprise in place. On an air-gapped host, run it elsewhere with `--download-only` and carry the bundle over.
 
 Or download the bundle from [Releases](https://github.com/reallysec/RST-Elastic-AI-Copilot/releases) yourself:
 
@@ -53,7 +53,11 @@ tar xzf RST-Elastic-AI-Copilot-<version>.tar.gz
 cd RST-Elastic-AI-Copilot-<version> && ./deploy.sh
 ```
 
-`deploy.sh` loads the images, generates secrets and the host fingerprint, asks for the LLM and Elasticsearch endpoints, and starts the stack behind Caddy TLS. About two minutes later, open `https://<hostname>/v2/`.
+`deploy.sh` loads the images, generates secrets and the host fingerprint, asks for the LLM and Elasticsearch endpoints, asks you to set the admin password, and starts the stack behind Caddy TLS. About two minutes later, open `https://<hostname-or-IP>/v2/` and log in as `admin`.
+
+By default the certificate comes from Caddy's internal CA, so it is self-signed for an IP address and for a domain alike: the browser warns until you trust the root certificate. To use your own certificate or Let's Encrypt, set `CADDY_TLS` in `.env` (see the deployment guide).
+
+**Activate a licence** (skip for Community): open **License** in the sidebar as admin. Online: paste the licence key and click Activate; it binds to this host by itself (needs outbound `license.reallysec.com:443`). Offline (Enterprise): switch to the Offline tab, copy the host fingerprint, get a `.lic` file for it from [console.reallysec.com](https://console.reallysec.com) or sales, upload it and activate.
 
 Upgrade, rollback, backup, SSO, Elasticsearch permissions and every `.env` key: [installation docs](https://reallysec.com/en/docs/elastic-ai-copilot/install/deploy).
 

@@ -38,7 +38,7 @@ services:
     # Tag is installer-managed: rst-update.sh writes GATEWAY_IMAGE_TAG into .env
     # on a health-gated release install / rollback (P4). Default preserves the
     # pre-P4 behaviour when the var is unset.
-    image: rst-elastic-ai-copilot-gateway:${GATEWAY_IMAGE_TAG:-1.2.11}
+    image: rst-elastic-ai-copilot-gateway:${GATEWAY_IMAGE_TAG:-1.2.12}
     container_name: rst-elastic-ai-copilot-gateway
     restart: unless-stopped
     # Resource ceiling so one runaway request / memory leak can't starve the
@@ -146,7 +146,7 @@ services:
       # Current running version — the heartbeat sends it, and the server only
       # offers a release/content pack newer than this. Keep in lockstep with
       # GATEWAY_IMAGE_TAG (rst-update.sh bumps the tag on install).
-      - APP_VERSION=${APP_VERSION:-${GATEWAY_IMAGE_TAG:-1.2.11}}
+      - APP_VERSION=${APP_VERSION:-${GATEWAY_IMAGE_TAG:-1.2.12}}
       # Vendor content/release signing PUBLIC key — content packs + online releases
       # verify against it fail-closed. OPTIONAL: leave unset and verification falls
       # back to the built-in license public key (fine until you ship dedicated-key
@@ -251,6 +251,16 @@ services:
       # 指纹的另一半。1.1.21 前它生在 gateway_state 卷里,卷丢了指纹就变;现在和
       # machine-id 同目录同寿命,deploy.sh 生成 / 从老卷迁出。同样别重新生成。
       - ./state/server_guid:/app/hostid/server_guid:ro
+      # 宿主机自己的 machine-id —— 离线证的 v2 指纹靠它区分"把 ./state 拷到另一台
+      # 机器"的克隆。没有这个文件（开发机）时离线指纹退回 v1 并打一条警告。
+      # Long form: a short-syntax bind of a missing file makes Docker create a
+      # DIRECTORY at /etc/machine-id on the host. Fail the start instead.
+      - type: bind
+        source: /etc/machine-id
+        target: /app/hostid/host-machine-id
+        read_only: true
+        bind:
+          create_host_path: false
       # (Dedicated content signing is opt-in: put the vendor content_public.pem in
       # ./certs and point RST_CONTENT_PUBLIC_KEY_PATH at /certs/content_public.pem.
       # Not mounted by default — verification falls back to the built-in license key.)
@@ -334,10 +344,12 @@ services:
       # address; set CADDY_DEFAULT_SNI explicitly to ONE value when
       # CADDY_SITE_ADDRESS lists several (default_sni takes a single name).
       - CADDY_DEFAULT_SNI=${CADDY_DEFAULT_SNI:-${CADDY_SITE_ADDRESS}}
+      - CADDY_TLS=${CADDY_TLS:-internal}
       - RST_GATEWAY_SHARED_SECRET=${RST_GATEWAY_SHARED_SECRET:?set RST_GATEWAY_SHARED_SECRET in .env}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data
+      - ./certs:/etc/caddy/certs:ro   # CADDY_TLS=<cert> <key> reads from here
       - caddy_config:/config
     depends_on:
       - gateway

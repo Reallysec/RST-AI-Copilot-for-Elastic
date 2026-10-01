@@ -89,15 +89,30 @@ limits your rights under those licenses.
 The Software runs in your environment. Your Data stays under your control, and
 you are responsible for it, including under applicable data protection laws.
 
-- **License and update service.** To activate and validate the License and to
-  offer updates, the Software sends Reallysec's license service the license
-  identifier, the product identifier and version, a hashed host fingerprint
-  derived from machine identifiers, and activation status. It does not send
-  Your Data. Offline activation, where your Edition includes it, sends nothing.
-- **Language models.** The Software sends prompts, which may include portions of
-  Your Data, to the language-model endpoints you configure, subject to the field
-  masking mode you select. Those endpoints are provided by you or your chosen
-  provider under their own terms; Reallysec does not receive that data.
+Apart from destinations you configure yourself (such as your Elasticsearch and
+Kibana, notification channels and audit-forwarding targets), the Software sends
+data outside your environment only as listed here:
+
+- **License service.** When a License is activated online and on each periodic
+  heartbeat, the Software sends Reallysec's license service
+  (license.reallysec.com) the license identifier, the product identifier and
+  version, the host fingerprint (a hash derived from machine identifiers), and
+  the `cluster_uuid` and version of the connected Elasticsearch cluster. Offline
+  activation, where your Edition includes it, sends nothing.
+- **Verification-failure report.** If a downloaded release or content pack fails
+  signature or checksum verification, the Software sends the license service the
+  license identifier, the product version and the reason for the failure.
+- **Update checks.** Once a day the Software downloads public release and
+  content-pack files from GitHub Releases. These requests send no customer data
+  beyond what any HTTP request carries.
+- **Language models.** The Software sends prompts and query results, which may
+  include portions of Your Data, to the language-model endpoints you configure,
+  subject to the field masking mode you select, and to no other destination.
+  Those endpoints are provided by you or your chosen provider under their own
+  terms; Reallysec does not receive that data.
+
+Nothing sent to Reallysec or to GitHub under this Section includes the contents
+of your logs, alerts or queries.
 
 ## 7. Updates, Support, and Preview Features
 
@@ -277,12 +292,22 @@ Reallysec Information Technology Ltd.，「版权人」）与安装或使用本�
 本软件运行于您的环境中。您的数据处于您的控制之下并由您负责，包括在适用的数据
 保护法律项下的责任。
 
-- **许可与更新服务。** 为激活和校验许可并提供更新，本软件向版权人的许可服务
-  发送许可标识、产品标识及版本、由机器标识生成的主机指纹哈希值以及激活状态，
-  不发送您的数据。您的版本包含离线激活时，离线激活不发送任何数据。
-- **大模型。** 本软件依据您选择的字段脱敏模式，将提示词（可能包含您的数据的一
-  部分）发送至您配置的大模型端点。该等端点由您或您选择的服务商依据其自身条款
-  提供，版权人不接收该等数据。
+除您自行配置的目的地（例如您的 Elasticsearch 和 Kibana、通知渠道及审计转发
+目标）外，本软件仅在下列情形向您的环境之外发送数据：
+
+- **许可服务。** 在线激活许可时以及每次定期心跳时，本软件向版权人的许可服务
+  （license.reallysec.com）发送许可标识、产品标识及版本、主机指纹（由机器标识
+  生成的哈希值），以及所连接 Elasticsearch 集群的 `cluster_uuid` 和版本。您的
+  版本包含离线激活时，离线激活不发送任何数据。
+- **校验失败报告。** 下载的版本或内容包未通过签名或校验和验证时，本软件向许可
+  服务发送许可标识、产品版本及失败原因。
+- **更新检查。** 本软件每天从 GitHub Releases 下载公开的版本和内容包文件。该等
+  请求除普通 HTTP 请求本身携带的信息外，不发送任何客户数据。
+- **大模型。** 本软件依据您选择的字段脱敏模式，将提示词和查询结果（可能包含您
+  的数据的一部分）发送至您配置的大模型端点，不发送至任何其他目的地。该等端点
+  由您或您选择的服务商依据其自身条款提供，版权人不接收该等数据。
+
+依本条发送至版权人或 GitHub 的任何数据均不包含您的日志、告警或查询的内容。
 
 ## 七、更新、支持与预览功能
 
