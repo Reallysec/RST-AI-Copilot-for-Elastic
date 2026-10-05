@@ -1,6 +1,6 @@
 # RST Elastic AI Copilot — End User License Agreement
 
-Version 1.1 · Effective 2026-09-30
+Version 1.2 · Effective 2026-10-06
 
 This End User License Agreement (the "Agreement") is between Anhui Reallysec
 Information Technology Ltd. (安徽斯普朗克信息技术有限公司, "Reallysec") and the
@@ -177,12 +177,16 @@ negligence, or any other liability that cannot be excluded by law.
 ## 11. Term and Termination
 
 This Agreement takes effect when you first install or use the Software and
-continues until your License expires or this Agreement is terminated.
-Reallysec may terminate this Agreement if you breach Section 3 or fail to pay
-applicable fees and do not cure the breach within thirty (30) days of notice.
+continues until it is terminated. Reallysec may terminate this Agreement if you
+breach Section 3 or fail to pay applicable fees and do not cure the breach
+within thirty (30) days of notice.
 
-On expiry or termination you must stop using the Software and destroy all
-copies. Sections 3, 4, 8, 9.2, 10, 12, and 13 survive termination.
+When a License expires, the rights it grants beyond the Community Edition end,
+and you may continue to use the Software as the Community Edition under
+Section 2. A revoked License ends the same way.
+
+On termination you must stop using the Software and destroy all copies.
+Sections 3, 4, 8, 9.2, 10, 12, and 13 survive termination.
 
 ## 12. Governing Law and Disputes
 
@@ -222,7 +226,7 @@ Contact: https://reallysec.com
 
 # RST Elastic AI Copilot 最终用户许可协议
 
-版本 1.1 · 生效日期 2026-09-30
+版本 1.2 · 生效日期 2026-10-06
 
 本《最终用户许可协议》（「本协议」）由安徽斯普朗克信息技术有限公司（Anhui
 Reallysec Information Technology Ltd.，「版权人」）与安装或使用本软件的个人
@@ -356,12 +360,14 @@ Reallysec Information Technology Ltd.，「版权人」）与安装或使用本�
 
 ## 十一、期限与终止
 
-本协议自您首次安装或使用本软件之时生效，持续至您的许可到期或本协议终止。如您
-违反第三条或未支付相应费用，且在收到通知后三十（30）日内未予纠正，版权人可
-终止本协议。
+本协议自您首次安装或使用本软件之时生效，持续至本协议终止。如您违反第三条或
+未支付相应费用，且在收到通知后三十（30）日内未予纠正，版权人可终止本协议。
 
-许可到期或本协议终止后，您须停止使用本软件并销毁全部副本。第三条、第四条、
-第八条、第九条第（二）款、第十条、第十二条及第十三条在本协议终止后继续有效。
+许可到期后，该许可授予的超出社区版的权利随之终止，您可依第二条继续以社区版
+使用本软件。许可被吊销的，亦同。
+
+本协议终止后，您须停止使用本软件并销毁全部副本。第三条、第四条、第八条、
+第九条第（二）款、第十条、第十二条及第十三条在本协议终止后继续有效。
 
 ## 十二、适用法律与争议解决
 

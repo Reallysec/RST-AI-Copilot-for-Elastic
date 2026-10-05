@@ -38,7 +38,7 @@ services:
     # Tag is installer-managed: rst-update.sh writes GATEWAY_IMAGE_TAG into .env
     # on a health-gated release install / rollback (P4). Default preserves the
     # pre-P4 behaviour when the var is unset.
-    image: rst-elastic-ai-copilot-gateway:${GATEWAY_IMAGE_TAG:-1.2.17}
+    image: rst-elastic-ai-copilot-gateway:${GATEWAY_IMAGE_TAG:-1.2.18}
     container_name: rst-elastic-ai-copilot-gateway
     restart: unless-stopped
     # Resource ceiling so one runaway request / memory leak can't starve the
@@ -146,13 +146,7 @@ services:
       # Current running version — the heartbeat sends it, and the server only
       # offers a release/content pack newer than this. Keep in lockstep with
       # GATEWAY_IMAGE_TAG (rst-update.sh bumps the tag on install).
-      - APP_VERSION=${APP_VERSION:-${GATEWAY_IMAGE_TAG:-1.2.17}}
-      # Vendor content/release signing PUBLIC key — content packs + online releases
-      # verify against it fail-closed. OPTIONAL: leave unset and verification falls
-      # back to the built-in license public key (fine until you ship dedicated-key
-      # signed content). To enable dedicated content signing, drop the vendor
-      # content_public.pem into ./certs and set this to /certs/content_public.pem.
-      - RST_CONTENT_PUBLIC_KEY_PATH=${RST_CONTENT_PUBLIC_KEY_PATH:-}
+      - APP_VERSION=${APP_VERSION:-${GATEWAY_IMAGE_TAG:-1.2.18}}
       # Content-pack cache under the /app/state volume so it survives image
       # swaps (default is a container-layer dir, lost on every update).
       - RST_CONTENT_DIR=/app/state/content
@@ -261,9 +255,6 @@ services:
         read_only: true
         bind:
           create_host_path: false
-      # (Dedicated content signing is opt-in: put the vendor content_public.pem in
-      # ./certs and point RST_CONTENT_PUBLIC_KEY_PATH at /certs/content_public.pem.
-      # Not mounted by default — verification falls back to the built-in license key.)
       # Release staging shared with the host installer: release_store (in the
       # container) writes staged artifacts + current.json here on heartbeat;
       # rst-update.sh (on the host, default RELEASE_DIR=./release) reads them to
