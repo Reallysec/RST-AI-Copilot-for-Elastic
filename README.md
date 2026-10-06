@@ -1,12 +1,12 @@
 <p align="center">
-  <img src=".github/assets/product-mark.svg" width="96" height="96" alt="RST Elastic AI Copilot">
+  <img src=".github/assets/product-mark.svg" width="96" height="96" alt="RST AI Copilot for Elastic">
 </p>
 
-<h1 align="center">RST Elastic AI Copilot</h1>
+<h1 align="center">RST AI Copilot for Elastic</h1>
 
 <p align="center">
   <b>Ask your Elastic logs in plain language.</b><br>
-  A self-hosted AI copilot for security operations on the Elasticsearch and Kibana you already run:<br>
+  A self-hosted AI copilot for security operations on the Elasticsearch® and Kibana® you already run:<br>
   search, alert triage and investigation, detection rules. Read-only, air-gap ready, every model call audited.
 </p>
 
@@ -26,7 +26,7 @@
   <img src=".github/assets/chat-result.en.png" alt="Smart query: question, generated DSL and result table" width="92%">
 </p>
 
-## Why RST Elastic AI Copilot
+## Why RST AI Copilot for Elastic
 
 - **Works with the stack you have.** One Docker gateway next to your existing Elasticsearch and Kibana. No new data store, no agents; it reads your logs and security alerts where they already are.
 - **Read-only by design.** Every generated query is validated as read-only before it runs. The gateway writes only its own `.rst_copilot_*` indices, and an index whitelist bounds what the model may query.
@@ -144,6 +144,8 @@ Details and pricing: [editions](https://reallysec.com/en/docs/elastic-ai-copilot
 
 ## Licensing
 
-RST Elastic AI Copilot is proprietary software, distributed as compiled container images under the [End User License Agreement](LICENSE), also included in every bundle as `docs/EULA.md`. The Community Edition is free to use without a licence; Professional and Enterprise are activated online or with an offline `.lic` from [console.reallysec.com](https://console.reallysec.com). "RST", "Reallysec", "斯普朗克" and the product logos are trademarks.
+RST AI Copilot for Elastic is proprietary software, distributed as compiled container images under the [End User License Agreement](LICENSE), also included in every bundle as `docs/EULA.md`. The Community Edition is free to use without a licence; Professional and Enterprise are activated online or with an offline `.lic` from [console.reallysec.com](https://console.reallysec.com). "RST", "Reallysec", "斯普朗克" and the product logos are trademarks.
+
+Elastic, Elasticsearch and Kibana are trademarks of Elasticsearch B.V., registered in the U.S. and in other countries. RST AI Copilot for Elastic is an independent product and is not affiliated with, endorsed by, or sponsored by Elasticsearch B.V. or Elastic N.V.; the names identify the platform it works with.
 
 © Anhui Reallysec Information Technology Ltd.

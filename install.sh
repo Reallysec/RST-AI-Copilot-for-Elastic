@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-command installer for RST Elastic AI Copilot.
+# One-command installer for RST AI Copilot for Elastic.
 #
 #   curl -fsSL https://github.com/reallysec/RST-Elastic-AI-Copilot/releases/latest/download/install.sh | sudo bash
 #
@@ -19,7 +19,7 @@
 # Re-running it (a newer version) keeps .env and state/machine-id in the install directory.
 set -euo pipefail
 
-PRODUCT="RST Elastic AI Copilot"
+PRODUCT="RST AI Copilot for Elastic"
 STEM="RST-Elastic-AI-Copilot"                     # archive: <STEM>-<version>.tar.gz
 GH_REPO="reallysec/RST-Elastic-AI-Copilot"
 DIR="/opt/rst-elastic-ai-copilot"

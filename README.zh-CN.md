@@ -1,12 +1,12 @@
 <p align="center">
-  <img src=".github/assets/product-mark.svg" width="96" height="96" alt="RST Elastic AI Copilot">
+  <img src=".github/assets/product-mark.svg" width="96" height="96" alt="RST AI Copilot for Elastic">
 </p>
 
-<h1 align="center">RST Elastic AI Copilot</h1>
+<h1 align="center">RST AI Copilot for Elastic</h1>
 
 <p align="center">
   <b>用自然语言问你的 Elastic 日志。</b><br>
-  接在你已有的 Elasticsearch / Kibana 上的私有化 AI 安全运营助手：<br>
+  接在你已有的 Elasticsearch® / Kibana® 上的私有化 AI 安全运营助手：<br>
   智能查询、告警分级与调查、检测规则生成。只读、可离网部署，每一次模型调用都有审计。
 </p>
 
@@ -26,7 +26,7 @@
   <img src=".github/assets/chat-result.zh.png" alt="智能查询：问题、生成的 DSL 和结果表" width="92%">
 </p>
 
-## 为什么选 RST Elastic AI Copilot
+## 为什么选 RST AI Copilot for Elastic
 
 - **直接用你现有的 ELK。** 一个 Docker 网关，接在已有的 Elasticsearch 和 Kibana 旁边。不新建数据存储、不装采集端，日志和安全告警就在原处读取。
 - **设计上只读。** 每条生成的查询在执行前都校验为只读。网关只写自己的 `.rst_copilot_*` 索引，索引白名单限定模型能查的范围。
@@ -144,6 +144,8 @@ cd RST-Elastic-AI-Copilot-<版本> && ./deploy.sh
 
 ## 许可
 
-RST Elastic AI Copilot 是专有软件，以编译后的容器镜像交付，依据[《最终用户许可协议》](LICENSE)使用（每个交付包里也附有 `docs/EULA.md`）。社区版无需许可、免费使用；专业版和企业版在 [console.reallysec.com](https://console.reallysec.com) 获取许可后在线激活或导入离线 `.lic`。「RST」「Reallysec」「斯普朗克」和产品标识是商标。
+RST AI Copilot for Elastic 是专有软件，以编译后的容器镜像交付，依据[《最终用户许可协议》](LICENSE)使用（每个交付包里也附有 `docs/EULA.md`）。社区版无需许可、免费使用；专业版和企业版在 [console.reallysec.com](https://console.reallysec.com) 获取许可后在线激活或导入离线 `.lic`。「RST」「Reallysec」「斯普朗克」和产品标识是商标。
+
+Elastic、Elasticsearch 和 Kibana 是 Elasticsearch B.V. 在美国及其他国家/地区的注册商标。RST AI Copilot for Elastic 是独立产品，与 Elasticsearch B.V. 或 Elastic N.V. 不存在隶属、认可或赞助关系；提及这些名称仅用于说明本产品所适配的平台。
 
 © 安徽斯普朗克信息技术有限公司（Anhui Reallysec Information Technology Ltd.）
