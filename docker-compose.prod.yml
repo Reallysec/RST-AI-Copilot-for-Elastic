@@ -17,7 +17,7 @@
 #
 # Manual path (only if you cannot run deploy.sh) — the delivery ships PREBUILT
 # images, there is no Dockerfile in it, so never pass --build:
-#   1. gunzip -c RST-Elastic-AI-Copilot-images-*.tar.gz | docker load
+#   1. gunzip -c RST-AI-Copilot-for-Elastic-images-*.tar.gz | docker load
 #      and put the loaded gateway tag in .env as GATEWAY_IMAGE_TAG=<tag>.
 #   2. cp .env.example .env  — fill LLM_*, RST_GATEWAY_SHARED_SECRET,
 #      RST_ADMIN_TOKEN, and the Elasticsearch block (ES_URL + ES_USER/ES_PASSWORD;
@@ -38,8 +38,8 @@ services:
     # Tag is installer-managed: rst-update.sh writes GATEWAY_IMAGE_TAG into .env
     # on a health-gated release install / rollback (P4). Default preserves the
     # pre-P4 behaviour when the var is unset.
-    image: rst-elastic-ai-copilot-gateway:${GATEWAY_IMAGE_TAG:-1.2.20}
-    container_name: rst-elastic-ai-copilot-gateway
+    image: rst-ai-copilot-for-elastic-gateway:${GATEWAY_IMAGE_TAG:-1.2.21}
+    container_name: rst-ai-copilot-for-elastic-gateway
     restart: unless-stopped
     # Resource ceiling so one runaway request / memory leak can't starve the
     # host. Override in .env per host size.
@@ -146,7 +146,7 @@ services:
       # Current running version — the heartbeat sends it, and the server only
       # offers a release/content pack newer than this. Keep in lockstep with
       # GATEWAY_IMAGE_TAG (rst-update.sh bumps the tag on install).
-      - APP_VERSION=${APP_VERSION:-${GATEWAY_IMAGE_TAG:-1.2.20}}
+      - APP_VERSION=${APP_VERSION:-${GATEWAY_IMAGE_TAG:-1.2.21}}
       # Content-pack cache under the /app/state volume so it survives image
       # swaps (default is a container-layer dir, lost on every update).
       - RST_CONTENT_DIR=/app/state/content
@@ -278,7 +278,7 @@ services:
   # 8.12.2 that installs before 1.2.4 created their data with (9.x can't open it).
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:${RST_ELK_VERSION:-8.12.2}
-    container_name: rst-elastic-ai-copilot-es
+    container_name: rst-ai-copilot-for-elastic-es
     restart: unless-stopped
     profiles: ["bundled-elk"]
     environment:
@@ -295,7 +295,7 @@ services:
 
   kibana:
     image: docker.elastic.co/kibana/kibana:${RST_ELK_VERSION:-8.12.2}
-    container_name: rst-elastic-ai-copilot-kibana
+    container_name: rst-ai-copilot-for-elastic-kibana
     restart: unless-stopped
     profiles: ["bundled-elk"]
     environment:
@@ -311,7 +311,7 @@ services:
   # again as the seeded administrator — see docs/BACKUP.md.
   userdb:
     image: postgres:16-alpine
-    container_name: rst-elastic-ai-copilot-userdb
+    container_name: rst-ai-copilot-for-elastic-userdb
     restart: unless-stopped
     environment:
       - POSTGRES_USER=${RST_USER_DB_USER:-rst}
@@ -327,7 +327,7 @@ services:
 
   caddy:
     image: caddy:2
-    container_name: rst-elastic-ai-copilot-caddy
+    container_name: rst-ai-copilot-for-elastic-caddy
     restart: unless-stopped
     ports:
       - "80:80"

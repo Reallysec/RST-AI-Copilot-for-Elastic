@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/reallysec/RST-Elastic-AI-Copilot/releases"><img src="https://img.shields.io/github/v/release/reallysec/RST-Elastic-AI-Copilot?label=release&color=00BFB3" alt="Latest release"></a>
+  <a href="https://github.com/reallysec/RST-AI-Copilot-for-Elastic/releases"><img src="https://img.shields.io/github/v/release/reallysec/RST-AI-Copilot-for-Elastic?label=release&color=00BFB3" alt="Latest release"></a>
   <img src="https://img.shields.io/badge/free-Community_Edition-1BA9F5" alt="Free Community Edition">
   <img src="https://img.shields.io/badge/Elasticsearch-8.x_%7C_9.x-005571?logo=elasticsearch&logoColor=white" alt="Elasticsearch 8.x and 9.x">
   <img src="https://img.shields.io/badge/deploy-Docker-2496ED?logo=docker&logoColor=white" alt="Deploy with Docker">
@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <b>English</b> · <a href="README.zh-CN.md">简体中文</a> · <a href="https://reallysec.com/en/docs/elastic-ai-copilot">Docs</a> · <a href="https://github.com/reallysec/RST-Elastic-AI-Copilot/releases">Download</a> · <a href="https://github.com/reallysec/RST-Elastic-AI-Copilot/issues">Report an issue</a>
+  <b>English</b> · <a href="README.zh-CN.md">简体中文</a> · <a href="https://reallysec.com/en/docs/elastic-ai-copilot">Docs</a> · <a href="https://github.com/reallysec/RST-AI-Copilot-for-Elastic/releases">Download</a> · <a href="https://github.com/reallysec/RST-AI-Copilot-for-Elastic/issues">Report an issue</a>
 </p>
 
 <p align="center">
@@ -40,17 +40,17 @@ You need a Linux host with Docker Engine 24+ and Compose v2, network access to E
 Install with one command:
 
 ```bash
-curl -fsSL https://github.com/reallysec/RST-Elastic-AI-Copilot/releases/latest/download/install.sh | sudo bash
+curl -fsSL https://github.com/reallysec/RST-AI-Copilot-for-Elastic/releases/latest/download/install.sh | sudo bash
 ```
 
-The script downloads the latest bundle, checks its SHA-256, unpacks it into `/opt/rst-elastic-ai-copilot` and runs `deploy.sh`. There is one bundle for every edition: without a licence it runs as the free Community Edition, and activating a licence on the **License** page (sidebar, `https://<host>/v2/license`) unlocks Professional or Enterprise in place. On an air-gapped host, run it elsewhere with `--download-only` and carry the bundle over.
+The script downloads the latest bundle, checks its SHA-256, unpacks it into `/opt/rst-ai-copilot-for-elastic` and runs `deploy.sh`. There is one bundle for every edition: without a licence it runs as the free Community Edition, and activating a licence on the **License** page (sidebar, `https://<host>/v2/license`) unlocks Professional or Enterprise in place. On an air-gapped host, run it elsewhere with `--download-only` and carry the bundle over.
 
-Or download the bundle from [Releases](https://github.com/reallysec/RST-Elastic-AI-Copilot/releases) yourself:
+Or download the bundle from [Releases](https://github.com/reallysec/RST-AI-Copilot-for-Elastic/releases) yourself:
 
 ```bash
-sha256sum -c RST-Elastic-AI-Copilot-<version>.tar.gz.sha256
-tar xzf RST-Elastic-AI-Copilot-<version>.tar.gz
-cd RST-Elastic-AI-Copilot-<version> && ./deploy.sh
+sha256sum -c RST-AI-Copilot-for-Elastic-<version>.tar.gz.sha256
+tar xzf RST-AI-Copilot-for-Elastic-<version>.tar.gz
+cd RST-AI-Copilot-for-Elastic-<version> && ./deploy.sh
 ```
 
 `deploy.sh` loads the images, generates secrets and the host fingerprint, asks for the LLM and Elasticsearch endpoints, asks you to set the admin password, and starts the stack behind Caddy TLS. About two minutes later, open `https://<hostname-or-IP>/v2/` and log in as `admin`.
@@ -139,8 +139,8 @@ Details and pricing: [editions](https://reallysec.com/en/docs/elastic-ai-copilot
 
 ## Support
 
-- **Questions and bugs**: open an [issue](https://github.com/reallysec/RST-Elastic-AI-Copilot/issues).
-- **Security vulnerabilities**: do not open a public issue; follow the [security policy](https://github.com/reallysec/RST-Elastic-AI-Copilot/security/policy).
+- **Questions and bugs**: open an [issue](https://github.com/reallysec/RST-AI-Copilot-for-Elastic/issues).
+- **Security vulnerabilities**: do not open a public issue; follow the [security policy](https://github.com/reallysec/RST-AI-Copilot-for-Elastic/security/policy).
 
 ## Licensing
 

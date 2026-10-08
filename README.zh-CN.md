@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/reallysec/RST-Elastic-AI-Copilot/releases"><img src="https://img.shields.io/github/v/release/reallysec/RST-Elastic-AI-Copilot?label=release&color=00BFB3" alt="最新版本"></a>
+  <a href="https://github.com/reallysec/RST-AI-Copilot-for-Elastic/releases"><img src="https://img.shields.io/github/v/release/reallysec/RST-AI-Copilot-for-Elastic?label=release&color=00BFB3" alt="最新版本"></a>
   <img src="https://img.shields.io/badge/免费-社区版-1BA9F5" alt="免费社区版">
   <img src="https://img.shields.io/badge/Elasticsearch-8.x-005571?logo=elasticsearch&logoColor=white" alt="Elasticsearch 8.x">
   <img src="https://img.shields.io/badge/deploy-Docker-2496ED?logo=docker&logoColor=white" alt="Docker 部署">
@@ -19,7 +19,7 @@
 </p>
 
 <p align="center">
-  <a href="README.md">English</a> · <b>简体中文</b> · <a href="https://reallysec.com/docs/elastic-ai-copilot">文档</a> · <a href="https://github.com/reallysec/RST-Elastic-AI-Copilot/releases">下载</a> · <a href="https://github.com/reallysec/RST-Elastic-AI-Copilot/issues">报告问题</a>
+  <a href="README.md">English</a> · <b>简体中文</b> · <a href="https://reallysec.com/docs/elastic-ai-copilot">文档</a> · <a href="https://github.com/reallysec/RST-AI-Copilot-for-Elastic/releases">下载</a> · <a href="https://github.com/reallysec/RST-AI-Copilot-for-Elastic/issues">报告问题</a>
 </p>
 
 <p align="center">
@@ -40,17 +40,17 @@
 一条命令安装：
 
 ```bash
-curl -fsSL https://github.com/reallysec/RST-Elastic-AI-Copilot/releases/latest/download/install.sh | sudo bash
+curl -fsSL https://github.com/reallysec/RST-AI-Copilot-for-Elastic/releases/latest/download/install.sh | sudo bash
 ```
 
-脚本下载最新的交付包，校验 SHA-256，解压到 `/opt/rst-elastic-ai-copilot` 后执行 `deploy.sh`。所有版本是同一个交付包：不导入许可即为免费的社区版，在侧栏「产品激活」页（`https://<地址>/v2/license`）激活许可后原地解锁专业版或企业版。离网主机可以在有网的机器上加 `--download-only` 下载，再把交付包拷过去。
+脚本下载最新的交付包，校验 SHA-256，解压到 `/opt/rst-ai-copilot-for-elastic` 后执行 `deploy.sh`。所有版本是同一个交付包：不导入许可即为免费的社区版，在侧栏「产品激活」页（`https://<地址>/v2/license`）激活许可后原地解锁专业版或企业版。离网主机可以在有网的机器上加 `--download-only` 下载，再把交付包拷过去。
 
-也可以从 [Releases](https://github.com/reallysec/RST-Elastic-AI-Copilot/releases) 手动下载交付包，然后：
+也可以从 [Releases](https://github.com/reallysec/RST-AI-Copilot-for-Elastic/releases) 手动下载交付包，然后：
 
 ```bash
-sha256sum -c RST-Elastic-AI-Copilot-<版本>.tar.gz.sha256
-tar xzf RST-Elastic-AI-Copilot-<版本>.tar.gz
-cd RST-Elastic-AI-Copilot-<版本> && ./deploy.sh
+sha256sum -c RST-AI-Copilot-for-Elastic-<版本>.tar.gz.sha256
+tar xzf RST-AI-Copilot-for-Elastic-<版本>.tar.gz
+cd RST-AI-Copilot-for-Elastic-<版本> && ./deploy.sh
 ```
 
 `deploy.sh` 加载镜像、生成密钥和主机指纹、询问大模型与 Elasticsearch 地址，让你设定管理员口令，然后在 Caddy TLS 后面起整个栈。约两分钟后打开 `https://<域名或 IP>/v2/`，用 `admin` 登录。
@@ -139,8 +139,8 @@ cd RST-Elastic-AI-Copilot-<版本> && ./deploy.sh
 
 ## 支持
 
-- **使用问题和缺陷**：提交 [issue](https://github.com/reallysec/RST-Elastic-AI-Copilot/issues)。
-- **安全漏洞**：请不要公开提 issue，按[安全策略](https://github.com/reallysec/RST-Elastic-AI-Copilot/security/policy)报告。
+- **使用问题和缺陷**：提交 [issue](https://github.com/reallysec/RST-AI-Copilot-for-Elastic/issues)。
+- **安全漏洞**：请不要公开提 issue，按[安全策略](https://github.com/reallysec/RST-AI-Copilot-for-Elastic/security/policy)报告。
 
 ## 许可
 

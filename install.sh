@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # One-command installer for RST AI Copilot for Elastic.
 #
-#   curl -fsSL https://github.com/reallysec/RST-Elastic-AI-Copilot/releases/latest/download/install.sh | sudo bash
+#   curl -fsSL https://github.com/reallysec/RST-AI-Copilot-for-Elastic/releases/latest/download/install.sh | sudo bash
 #
 # Options: --version <x.y.z> (default: the newest signed release)   --dir <path> (default below)
 #          --mirror github|cn   github: GitHub Releases only; cn: China mirror (Tencent COS) first,
@@ -20,15 +20,20 @@
 set -euo pipefail
 
 PRODUCT="RST AI Copilot for Elastic"
-STEM="RST-Elastic-AI-Copilot"                     # archive: <STEM>-<version>.tar.gz
-GH_REPO="reallysec/RST-Elastic-AI-Copilot"
-DIR="/opt/rst-elastic-ai-copilot"
-# China mirror (Tencent COS): <base>/rst-elastic-ai-copilot/<version>/<file> and .../latest/VERSION.
+STEM="RST-AI-Copilot-for-Elastic"                     # archive: <STEM>-<version>.tar.gz
+GH_REPO="reallysec/RST-AI-Copilot-for-Elastic"
+DIR="/opt/rst-ai-copilot-for-elastic"
+# Installs from before the 1.2.21 rename live here. Keep upgrading them in place: the
+# directory names the compose project (so the data volumes) and holds state/server_guid,
+# so a fresh directory would look like data loss and a new host fingerprint.
+LEGACY_DIR="/opt/rst-elastic-ai-copilot"
+[ -f "$LEGACY_DIR/.env" ] && DIR="$LEGACY_DIR"
+# China mirror (Tencent COS): <base>/rst-ai-copilot-for-elastic/<version>/<file> and .../latest/VERSION.
 # The bucket does not exist yet — this default is a PLACEHOLDER. Until it is replaced (or
 # RST_COS_BASE is set) the mirror is skipped instead of trying a bogus host.
 COS_PLACEHOLDER="https://rst-releases-XXXXXXXX.cos.ap-shanghai.myqcloud.com"
 COS_BASE="${RST_COS_BASE:-$COS_PLACEHOLDER}"
-COS_PREFIX="rst-elastic-ai-copilot"
+COS_PREFIX="rst-ai-copilot-for-elastic"
 # GitHub endpoints; overridable so the tests can run offline against file:// trees.
 # Nothing here is trusted: only the signature below is.
 GH_BASE="${RST_GITHUB_BASE:-https://github.com/$GH_REPO/releases}"
@@ -225,7 +230,7 @@ say "== $PRODUCT $VERSION -> $DIR"
 # The archive carries no .env and no state/, so an existing install keeps both. Old image
 # tars are removed first so deploy.sh loads only this version's images.
 mkdir -p "$DIR"
-rm -f "$DIR"/"$STEM"-images-*.tar
+rm -f "$DIR"/"$STEM"-images-*.tar "$DIR"/RST-Elastic-AI-Copilot-images-*.tar   # + pre-rename leftovers
 tar xzf "$ARCHIVE" -C "$DIR" --strip-components=1
 say "== unpacked; starting deploy.sh"
 cd "$DIR"
