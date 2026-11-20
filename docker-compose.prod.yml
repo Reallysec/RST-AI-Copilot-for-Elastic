@@ -38,7 +38,7 @@ services:
     # Tag is installer-managed: rst-update.sh writes GATEWAY_IMAGE_TAG into .env
     # on a health-gated release install / rollback (P4). Default preserves the
     # pre-P4 behaviour when the var is unset.
-    image: rst-ai-copilot-for-elastic-gateway:${GATEWAY_IMAGE_TAG:-1.2.24}
+    image: rst-ai-copilot-for-elastic-gateway:${GATEWAY_IMAGE_TAG:-1.2.25}
     container_name: rst-ai-copilot-for-elastic-gateway
     restart: unless-stopped
     # Resource ceiling so one runaway request / memory leak can't starve the
@@ -146,7 +146,7 @@ services:
       # Current running version — the heartbeat sends it, and the server only
       # offers a release/content pack newer than this. Keep in lockstep with
       # GATEWAY_IMAGE_TAG (rst-update.sh bumps the tag on install).
-      - APP_VERSION=${APP_VERSION:-${GATEWAY_IMAGE_TAG:-1.2.24}}
+      - APP_VERSION=${APP_VERSION:-${GATEWAY_IMAGE_TAG:-1.2.25}}
       # Content-pack cache under the /app/state volume so it survives image
       # swaps (default is a container-layer dir, lost on every update).
       - RST_CONTENT_DIR=/app/state/content
@@ -157,6 +157,11 @@ services:
       # Release staging — a HOST bind mount (see volumes) so the host-side
       # rst-update.sh reads staged artifacts + current.json the container wrote.
       - RST_RELEASE_DIR=/app/release
+      # Update site (COS) asked before GitHub. `${VAR-default}`: unset = the default,
+      # set to EMPTY in .env = mirror off (GitHub only) - the empty value must reach the gateway.
+      - RST_UPDATE_MIRROR_URL=${RST_UPDATE_MIRROR_URL-https://updates.reallysec.com/releases/rst-ai-copilot-for-elastic}
+      # One-click updater status (1.2.25+), see the read-only mount below.
+      - RST_UPDATER_STATUS_DIR=/app/update-status
       # ── Audit (security product → recommend on) + retention ──
       # The audit index grows without bound unless ILM is bootstrapped; the
       # retention window only applies once RST_ILM_BOOTSTRAP is on.
@@ -265,6 +270,10 @@ services:
       # docker-load + health-gate the swap. MUST be a bind mount — a named
       # volume is not readable by the host script.
       - ./release:/app/release
+      # Written by root on the host (rst-update.sh --serve: heartbeat, job status,
+      # job log); READ-ONLY here so a compromised gateway can request an update
+      # but cannot forge its outcome. Docker creates the directory if missing.
+      - ./.rst-update/public:/app/update-status:ro
     depends_on:
       elasticsearch:
         condition: service_healthy

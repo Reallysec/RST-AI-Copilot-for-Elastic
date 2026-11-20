@@ -28,12 +28,11 @@ DIR="/opt/rst-ai-copilot-for-elastic"
 # so a fresh directory would look like data loss and a new host fingerprint.
 LEGACY_DIR="/opt/rst-elastic-ai-copilot"
 [ -f "$LEGACY_DIR/.env" ] && DIR="$LEGACY_DIR"
-# China mirror (Tencent COS): <base>/rst-ai-copilot-for-elastic/<version>/<file> and .../latest/VERSION.
-# The bucket does not exist yet — this default is a PLACEHOLDER. Until it is replaced (or
-# RST_COS_BASE is set) the mirror is skipped instead of trying a bogus host.
-COS_PLACEHOLDER="https://rst-releases-XXXXXXXX.cos.ap-shanghai.myqcloud.com"
-COS_BASE="${RST_COS_BASE:-$COS_PLACEHOLDER}"
-COS_PREFIX="rst-ai-copilot-for-elastic"
+# China mirror: the COS update site shared with RST AI Fabric (the same one gateways use
+# for online updates): <base>/releases/rst-ai-copilot-for-elastic/<version>/<file> and
+# .../latest/VERSION. RST_COS_BASE overrides the host (tests).
+COS_BASE="${RST_COS_BASE:-https://updates.reallysec.com}"
+COS_PREFIX="releases/rst-ai-copilot-for-elastic"
 # GitHub endpoints; overridable so the tests can run offline against file:// trees.
 # Nothing here is trusted: only the signature below is.
 GH_BASE="${RST_GITHUB_BASE:-https://github.com/$GH_REPO/releases}"
@@ -188,9 +187,6 @@ pick_version() {  # src -> sets V
 # source is unreachable (the caller tries the next one); exits on anything forged.
 get_from() {  # github|cn
   local base actual
-  if [ "$1" = cn ] && [ "$COS_BASE" = "$COS_PLACEHOLDER" ]; then
-    say "== China mirror not configured yet (set RST_COS_BASE); skipping it"; return 1
-  fi
   pick_version "$1" || return 1
   verify_token "$V"
   base="$(dl_base "$1" "$V")"
