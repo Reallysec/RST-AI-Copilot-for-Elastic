@@ -10,8 +10,9 @@
 # Only Caddy (:443) is exposed on the host. The gateway sits on the internal
 # Docker network and reaches the customer ES over their network.
 #
-# Setup — run ./deploy.sh. It loads the bundled image tar, collects the config,
-# writes .env and starts the stack:
+# Setup — run ./deploy.sh. It asks nothing: loads the bundled image tar, writes
+# .env (secrets, admin password, access address) and starts the stack. ES, the
+# LLM and the license are then set in the web UI:
 #   ./deploy.sh
 #   open https://<CADDY_SITE_ADDRESS>/v2/
 #
@@ -19,8 +20,8 @@
 # images, there is no Dockerfile in it, so never pass --build:
 #   1. gunzip -c RST-AI-Copilot-for-Elastic-images-*.tar.gz | docker load
 #      and put the loaded gateway tag in .env as GATEWAY_IMAGE_TAG=<tag>.
-#   2. cp .env.example .env  — fill LLM_*, RST_GATEWAY_SHARED_SECRET,
-#      RST_ADMIN_TOKEN, and the Elasticsearch block (ES_URL + ES_USER/ES_PASSWORD;
+#   2. cp .env.example .env  — fill RST_GATEWAY_SHARED_SECRET, RST_ADMIN_TOKEN,
+#      CADDY_SITE_ADDRESS; optionally LLM_* and the Elasticsearch block (ES_URL + ES_USER/ES_PASSWORD;
 #      8.x usually has security on). For HTTPS ES set RST_ES_VERIFY_CERTS=true and
 #      RST_ES_CA_CERT=/certs/es-ca.pem (drop the CA into ./certs).
 #   3. mkdir -p state && openssl rand -hex 16 > state/machine-id #        && cat /proc/sys/kernel/random/uuid > state/server_guid && chmod 644 state/*
@@ -38,7 +39,7 @@ services:
     # Tag is installer-managed: rst-update.sh writes GATEWAY_IMAGE_TAG into .env
     # on a health-gated release install / rollback (P4). Default preserves the
     # pre-P4 behaviour when the var is unset.
-    image: rst-ai-copilot-for-elastic-gateway:${GATEWAY_IMAGE_TAG:-1.2.25}
+    image: rst-ai-copilot-for-elastic-gateway:${GATEWAY_IMAGE_TAG:-1.2.26}
     container_name: rst-ai-copilot-for-elastic-gateway
     restart: unless-stopped
     # Resource ceiling so one runaway request / memory leak can't starve the
@@ -49,8 +50,9 @@ services:
           cpus: "${RST_GATEWAY_CPUS:-2}"
           memory: ${RST_GATEWAY_MEM:-2g}
     environment:
-      # ── Customer Elasticsearch (REQUIRED — this stack ships no ES) ──
-      - ES_URL=${ES_URL:?set ES_URL to the customer's Elasticsearch endpoint in .env}
+      # ── Customer Elasticsearch — usually set in the UI (Settings → Elasticsearch connection);
+      # blank here = not configured yet, the gateway still starts ──
+      - ES_URL=${ES_URL:-}
       - ES_USER=${ES_USER:-}
       - ES_PASSWORD=${ES_PASSWORD:-}
       - ES_API_KEY=${ES_API_KEY:-}
@@ -78,10 +80,10 @@ services:
       - KIBANA_API_KEY=${KIBANA_API_KEY:-}
       - KIBANA_USER=${KIBANA_USER:-}
       - KIBANA_PASSWORD=${KIBANA_PASSWORD:-}
-      # ── LLM provider (REQUIRED) ──
-      - LLM_API_KEY=${LLM_API_KEY:?set LLM_API_KEY in .env}
+      # ── LLM provider — usually added in the UI (AI settings); blank = none yet ──
+      - LLM_API_KEY=${LLM_API_KEY:-}
       - LLM_BASE_URL=${LLM_BASE_URL:-}
-      - LLM_MODEL=${LLM_MODEL:?set LLM_MODEL in .env}
+      - LLM_MODEL=${LLM_MODEL:-}
       - LLM_TIMEOUT_S=${LLM_TIMEOUT_S:-}
       # 推理强度（思考模式）——见 .env.example 同名段；不设走网关按任务的默认。
       - LLM_REASONING=${LLM_REASONING:-}
@@ -146,7 +148,7 @@ services:
       # Current running version — the heartbeat sends it, and the server only
       # offers a release/content pack newer than this. Keep in lockstep with
       # GATEWAY_IMAGE_TAG (rst-update.sh bumps the tag on install).
-      - APP_VERSION=${APP_VERSION:-${GATEWAY_IMAGE_TAG:-1.2.25}}
+      - APP_VERSION=${APP_VERSION:-${GATEWAY_IMAGE_TAG:-1.2.26}}
       # Content-pack cache under the /app/state volume so it survives image
       # swaps (default is a container-layer dir, lost on every update).
       - RST_CONTENT_DIR=/app/state/content
@@ -297,7 +299,7 @@ services:
     volumes:
       - es_data:/usr/share/elasticsearch/data
     healthcheck:
-      test: ["CMD-SHELL", "curl -fs http://localhost:9200 >/dev/null || exit 1"]
+      test: ["CMD-SHELL", "curl -fs --noproxy '*' http://localhost:9200 >/dev/null || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 30
@@ -351,6 +353,12 @@ services:
       - CADDY_TLS=${CADDY_TLS:-internal}
       - CADDY_TRUSTED_PROXIES=${CADDY_TRUSTED_PROXIES:-127.0.0.1/32}
       - RST_GATEWAY_SHARED_SECRET=${RST_GATEWAY_SHARED_SECRET:?set RST_GATEWAY_SHARED_SECRET in .env}
+      # Caddy only proxies to gateway:8000 and issues its own certificates; it never
+      # needs an outbound proxy. A host with proxies in ~/.docker/config.json injects
+      # HTTP(S)_PROXY into every container, which would send gateway:8000 through it
+      # and every page would return 502.
+      - NO_PROXY=*
+      - no_proxy=*
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - caddy_data:/data

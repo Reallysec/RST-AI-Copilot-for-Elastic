@@ -7,11 +7,13 @@
 #          --mirror github|cn   github: GitHub Releases only; cn: China mirror (Tencent COS) first,
 #                               GitHub second. Default: GitHub first, the China mirror when it fails.
 #                               Same as env RST_MIRROR=github|cn.
+#          --site "<domain or IP> ..."   access address passed to deploy.sh (default: detected)
 #          --download-only   verify and save the archive in the current directory, deploy nothing
 #                            (carry it to an air-gapped host and run deploy.sh there)
 #
 # Every edition is the same archive: without a license it runs as the Community Edition;
 # importing a license in Settings -> License unlocks Professional or Enterprise in place.
+# deploy.sh asks nothing: Elasticsearch, models and the license are set in the web UI after.
 # Every release is checked against its signed manifest (release-manifest.token, signed with
 # the Reallysec release key embedded below): the archive must match the signed sha256, or
 # nothing is installed. Without --version the newest signed release is installed (a release
@@ -55,14 +57,15 @@ YMCz8SPnCIa5QIyPA69mDu1QJ1k8rvjU1Z4jVcArg1CkULcf4yNKQNab03h1Wdk4
 TiuQHaEJKFSXVN3WELciX1LuXrRbF5UcQh4X6LngM1svAgMBAAE=
 -----END PUBLIC KEY-----'
 
-VERSION=""; DOWNLOAD_ONLY=0; MIRROR="${RST_MIRROR:-}"
+VERSION=""; DOWNLOAD_ONLY=0; MIRROR="${RST_MIRROR:-}"; SITE=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --download-only) DOWNLOAD_ONLY=1; shift ;;
     --version) VERSION="${2#v}"; shift 2 ;;
     --dir)     DIR="${2:?}"; shift 2 ;;
     --mirror)  MIRROR="${2:?}"; shift 2 ;;
-    -h|--help) sed -n '2,19p' "$0" 2>/dev/null || true; exit 0 ;;
+    --site)    SITE="${2:?}"; shift 2 ;;
+    -h|--help) sed -n '2,21p' "$0" 2>/dev/null || true; exit 0 ;;
     *) echo "unknown option: $1" >&2; exit 2 ;;
   esac
 done
@@ -87,7 +90,6 @@ if [ "$DOWNLOAD_ONLY" = 0 ]; then
   [ "$(id -u)" = 0 ] || fail "run as root: pipe to 'sudo bash'."
   command -v docker >/dev/null || fail "Docker Engine 24+ is required. Install it first, e.g.: curl -fsSL https://get.docker.com | sh"
   docker compose version >/dev/null 2>&1 || fail "Docker Compose v2 is required (the docker compose plugin)."
-  [ -r /dev/tty ] || fail "deploy.sh asks questions; run this from an interactive terminal."
 fi
 
 # Scratch space for the manifest (and, when installing, the archive).
@@ -231,4 +233,4 @@ tar xzf "$ARCHIVE" -C "$DIR" --strip-components=1
 say "== unpacked; starting deploy.sh"
 cd "$DIR"
 rm -rf "$WORK"   # exec skips the EXIT trap
-exec ./deploy.sh </dev/tty
+exec ./deploy.sh ${SITE:+--site "$SITE"} </dev/null
